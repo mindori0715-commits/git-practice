@@ -1,0 +1,15 @@
+name: Workflow Error
+on: workflow_dispatch
+
+jobs:
+  error-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Successful step
+        run: echo "This step succeeds"
+
+      - name: Intentional runtime error
+        run: exit 1
+
+      - name: After error
+        run: echo "This step will not run"
