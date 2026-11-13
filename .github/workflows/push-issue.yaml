@@ -1,0 +1,31 @@
+
+name: Create Issue on Push
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  issues: write
+
+jobs:
+  create-issue:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+
+          gh api \
+            --method POST \
+            "repos/$GITHUB_REPOSITORY/issues" \
+            -f title="Push event: $SHORT_SHA" \
+            -f body="An issue was automatically created by a push event.
+
+          Repository: $GITHUB_REPOSITORY
+          Commit: $GITHUB_SHA
+          Actor: $GITHUB_ACTOR" \
+            --jq '.html_url'
