@@ -1,0 +1,38 @@
+
+name: Actions Part 2 Practice
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  practice:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Hello
+        if: ${{ contains(github.run_id, '1') }}
+        run: echo "Hello"
+
+      - name: Print Goodbye
+        if: ${{ !contains(github.run_id, '1') }}
+        run: echo "Goodbye"
+
+      - name: Expression Functions
+        run: |
+          echo "${{ format('Repository: {0}', github.repository) }}"
+          echo "${{ join(fromJSON('["A","B","C"]'), ', ') }}"
+
+      - name: Set Environment Variable
+        run: echo "MESSAGE=Hello GitHub Actions" >> "$GITHUB_ENV"
+
+      - name: Set Output
+        id: result
+        run: echo "value=success" >> "$GITHUB_OUTPUT"
+
+      - name: Print Environment and Output
+        if: ${{ success() && steps.result.outputs.value == 'success' }}
+        run: |
+          echo "$MESSAGE"
+          echo "${{ steps.result.outputs.value }}"
