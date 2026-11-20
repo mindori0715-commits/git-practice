@@ -8,7 +8,7 @@ def test_subtotal_normal():
 
 
 def test_subtotal_zero():
-    assert subtotal(0, 3) == 1
+    assert subtotal(0, 3) == 0
 
 
 def test_subtotal_negative():
